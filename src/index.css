@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Elder Care Design System - Professional healthcare/security inspired design
+All colors MUST be HSL for consistency across light/dark modes.
+*/
+
+@layer base {
+  :root {
+    /* Elder Care Brand Colors */
+    --background: 0 0% 100%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    /* Primary: Trust-building blue inspired by healthcare */
+    --primary: 212 95% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 212 95% 45%;
+
+    /* Secondary: Soft healthcare blue */
+    --secondary: 212 30% 96%;
+    --secondary-foreground: 212 95% 20%;
+
+    /* Accent: Caring green for positive actions */
+    --accent: 142 76% 36%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Muted: Professional grays */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8.9% 46.1%;
+
+    /* Destructive: Emergency red */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 212 95% 50%;
+
+    /* Elder Care Specific Colors */
+    --healthcare-blue: 212 95% 50%;
+    --care-green: 142 76% 36%;
+    --trust-blue: 212 45% 85%;
+    --safety-orange: 25 95% 53%;
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(212 95% 50%), hsl(212 45% 85%));
+    --gradient-care: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 45% 75%));
+    --gradient-trust: linear-gradient(180deg, hsl(212 30% 96%), hsl(0 0% 100%));
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px hsl(212 95% 50% / 0.1);
+    --shadow-card: 0 8px 32px hsl(220 15% 15% / 0.08);
+    --shadow-button: 0 4px 16px hsl(212 95% 50% / 0.3);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 20% 8%;
+    --foreground: 220 14% 95%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 220 14% 95%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 220 14% 95%;
+
+    --primary: 212 95% 55%;
+    --primary-foreground: 220 20% 8%;
+    --primary-hover: 212 95% 60%;
+
+    --secondary: 220 16% 16%;
+    --secondary-foreground: 220 14% 95%;
+
+    --accent: 142 76% 40%;
+    --accent-foreground: 220 20% 8%;
+
+    --muted: 220 16% 16%;
+    --muted-foreground: 220 14% 70%;
+
+    --destructive: 0 84.2% 65%;
+    --destructive-foreground: 220 20% 8%;
+
+    --border: 220 16% 16%;
+    --input: 220 16% 16%;
+    --ring: 212 95% 55%;
+
+    /* Dark mode specific adjustments */
+    --healthcare-blue: 212 95% 55%;
+    --care-green: 142 76% 40%;
+    --trust-blue: 212 30% 25%;
+    --safety-orange: 25 95% 58%;
+    
+    --gradient-hero: linear-gradient(135deg, hsl(212 95% 55%), hsl(212 30% 25%));
+    --gradient-care: linear-gradient(135deg, hsl(142 76% 40%), hsl(142 30% 30%));
+    --gradient-trust: linear-gradient(180deg, hsl(220 16% 16%), hsl(220 20% 10%));
+    
+    --shadow-soft: 0 4px 20px hsl(220 20% 8% / 0.4);
+    --shadow-card: 0 8px 32px hsl(220 20% 8% / 0.3);
+    --shadow-button: 0 4px 16px hsl(212 95% 55% / 0.4);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer components {
+  .hero-text-glow {
+    text-shadow: 0 0 40px hsl(var(--primary) / 0.3);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-care {
+    background: var(--gradient-care);
+  }
+
+  .gradient-trust {
+    background: var(--gradient-trust);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
