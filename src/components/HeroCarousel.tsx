@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Shield, Bot, Heart } from "lucide-react";
-import heroElderCare from "@/assets/hero-elder-care.jpg";
+import heroElderCare from "@/assets/hero-elder-care.jpeg";
 import heroAiCoach from "@/assets/hero-ai-coach.jpg";
 import heroHealthcareTeam from "@/assets/hero-healthcare-team.jpg";
 
