@@ -71,7 +71,9 @@ const Dashboard = () => {
                 <Video className="h-5 w-5 text-primary" />
                 Live Feed
               </CardTitle>
-              <CardDescription>Upload and monitor video feeds</CardDescription>
+              <CardDescription>
+                Fall detection, Hit detection, Stress detection
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <input
