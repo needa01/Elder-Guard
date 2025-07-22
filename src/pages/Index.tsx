@@ -10,7 +10,7 @@ import { PricingOffer } from "@/components/PricingOffer";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <Navigation />
+      <Navigation forceScrolledState />
       <HeroCarousel />
       <MonitoringSolutions />
       <Features />

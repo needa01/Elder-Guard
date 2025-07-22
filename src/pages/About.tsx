@@ -1,10 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Navigation } from "@/components/Navigation";
+import fallDetectionImage from "@/assets/fall-detection.jpg";
+import cameraSystemImage from "@/assets/camera-system.jpg";
+import emergencyServicesImage from "@/assets/emergency-services.jpg";
+import distressDetectionImage from "@/assets/distress-detection.jpg";
+import abusePreventionImage from "@/assets/abuse-prevention.jpg";
 
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <Navigation forceScrolledState />
 
       {/* Hero Section */}
       <div className="pt-16 bg-gradient-to-br from-elderguard-blue to-elderguard-blue-dark">
@@ -165,6 +170,433 @@ const About = () => {
         </div>
       </div>
 
+      <div className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Advanced AI-Powered Features
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Cutting-edge technology designed to protect what matters most
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+            {/* Fall Detection */}
+            <Card className="overflow-hidden">
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={fallDetectionImage}
+                  alt="AI Fall Detection System"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardContent className="p-6">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                    <svg
+                      className="w-5 h-5 text-red-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold">
+                    Intelligent Fall Detection
+                  </h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Advanced AI algorithms analyze movement patterns to instantly
+                  detect falls, automatically triggering emergency protocols
+                  within seconds.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-1">
+                  <li>• 99.2% accuracy rate</li>
+                  <li>• Sub-5 second detection</li>
+                  <li>• False alarm prevention</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Distress Detection */}
+            <Card className="overflow-hidden">
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={distressDetectionImage}
+                  alt="AI Distress Recognition System"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardContent className="p-6">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                    <svg
+                      className="w-5 h-5 text-orange-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2M7 4h10M7 4l-2 14h14l-2-14M11 9v4m4-4v4"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold">
+                    Distress Recognition
+                  </h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Voice pattern analysis and behavioral monitoring to detect
+                  signs of distress, confusion, or calls for help even when
+                  conventional alerts aren't triggered.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-1">
+                  <li>• Voice stress analysis</li>
+                  <li>• Behavioral pattern changes</li>
+                  <li>• 24/7 audio monitoring</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Abuse Detection */}
+            <Card className="overflow-hidden">
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={abusePreventionImage}
+                  alt="AI Abuse Prevention System"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardContent className="p-6">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                    <svg
+                      className="w-5 h-5 text-purple-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold">Abuse Prevention</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Sensitive monitoring for signs of physical or emotional abuse
+                  through advanced pattern recognition while maintaining strict
+                  privacy protocols.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-1">
+                  <li>• Privacy-first approach</li>
+                  <li>• Pattern recognition</li>
+                  <li>• Confidential reporting</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Emergency Response */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="grid lg:grid-cols-2 gap-0">
+              <div className="p-8 lg:p-12">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                    <svg
+                      className="w-6 h-6 text-red-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Emergency Response Coordination
+                  </h3>
+                </div>
+                <p className="text-lg text-gray-600 mb-6">
+                  When emergencies are detected, our system automatically
+                  coordinates with local emergency services, providing them with
+                  critical information before they arrive.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                      <svg
+                        className="w-3 h-3 text-green-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        Automatic 911 Dispatch
+                      </h4>
+                      <p className="text-gray-600">
+                        Direct connection to emergency services with precise
+                        location data
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                      <svg
+                        className="w-3 h-3 text-green-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        Medical History Sharing
+                      </h4>
+                      <p className="text-gray-600">
+                        Critical health information provided to first responders
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                      <svg
+                        className="w-3 h-3 text-green-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        Family Notification
+                      </h4>
+                      <p className="text-gray-600">
+                        Immediate alerts to designated emergency contacts
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="h-64 lg:h-auto">
+                <img
+                  src={emergencyServicesImage}
+                  alt="Emergency Services Response"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Products Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Professional Monitoring Solutions
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Enterprise-grade hardware designed specifically for elder care
+              environments
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <img
+                src={cameraSystemImage}
+                alt="ElderGuard Camera System"
+                className="w-full rounded-lg shadow-lg"
+              />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Complete Camera Ecosystem
+              </h3>
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                    Indoor Monitoring Cameras
+                  </h4>
+                  <p className="text-gray-600">
+                    Discreet, privacy-conscious cameras with advanced AI
+                    processing for fall detection, behavioral analysis, and
+                    emergency recognition.
+                  </p>
+                  <ul className="mt-2 text-sm text-gray-500">
+                    <li>• 4K resolution with night vision</li>
+                    <li>• Local AI processing for privacy</li>
+                    <li>• Two-way communication</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                    Outdoor Security Cameras
+                  </h4>
+                  <p className="text-gray-600">
+                    Weather-resistant cameras for monitoring entrances, gardens,
+                    and outdoor areas where seniors may spend time.
+                  </p>
+                  <ul className="mt-2 text-sm text-gray-500">
+                    <li>• Weatherproof IP67 rating</li>
+                    <li>• Motion detection and alerts</li>
+                    <li>• Solar power option available</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                    Wearable Devices
+                  </h4>
+                  <p className="text-gray-600">
+                    Comfortable, water-resistant wearables with GPS tracking,
+                    fall detection, and emergency buttons.
+                  </p>
+                  <ul className="mt-2 text-sm text-gray-500">
+                    <li>• 7-day battery life</li>
+                    <li>• GPS and indoor positioning</li>
+                    <li>• Medication reminders</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* AI Services Section */}
+      <div className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Intelligent AI Services
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Machine learning models trained specifically for elder care
+              scenarios
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="p-6">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold mb-2">
+                  Predictive Health Analysis
+                </h3>
+                <p className="text-gray-600">
+                  AI algorithms analyze daily patterns to predict potential
+                  health issues before they become emergencies.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="p-6">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg
+                    className="w-6 h-6 text-green-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold mb-2">
+                  Natural Language Processing
+                </h3>
+                <p className="text-gray-600">
+                  Advanced voice recognition to understand calls for help,
+                  confusion, or requests for assistance in natural conversation.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="p-6">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg
+                    className="w-6 h-6 text-purple-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold mb-2">
+                  Real-time Decision Engine
+                </h3>
+                <p className="text-gray-600">
+                  Millisecond response times for critical decisions,
+                  automatically escalating threats based on severity and
+                  context.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
       {/* Values Section */}
       <div className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

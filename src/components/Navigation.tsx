@@ -32,7 +32,8 @@ export const Navigation = ({ forceScrolledState = false }: NavigationProps) => {
         isScrolled || forceScrolledState
           ? "bg-background/95 backdrop-blur-md shadow-card"
           : "bg-transparent"
-      }`}
+      }
+      `}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">

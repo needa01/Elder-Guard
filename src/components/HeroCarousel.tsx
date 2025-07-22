@@ -71,7 +71,7 @@ export const HeroCarousel = () => {
   };
 
   return (
-    <section id="home" className="relative h-screen overflow-hidden">
+    <section id="home" className="relative mt-16 h-screen overflow-hidden">
       {slides.map((slide, index) => {
         const IconComponent = slide.icon;
         return (

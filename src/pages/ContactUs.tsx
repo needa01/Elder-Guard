@@ -8,7 +8,7 @@ import { Navigation } from "@/components/Navigation";
 const ContactUs = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <Navigation forceScrolledState />
 
       {/* Hero Section */}
       <div className="pt-16 bg-gradient-to-br from-elderguard-blue to-elderguard-blue-dark">
