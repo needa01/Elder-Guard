@@ -70,13 +70,13 @@ export const Features = () => {
                     {feature.description}
                   </p>
 
-                  <Button 
+                  {/* <Button 
                     variant="ghost" 
                     size="sm" 
                     className="text-primary hover:text-primary-foreground hover:bg-primary p-0 h-auto font-semibold"
                   >
                     Learn More →
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             );
