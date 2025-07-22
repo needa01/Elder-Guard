@@ -23,6 +23,7 @@ export const Navigation = ({ forceScrolledState = false }: NavigationProps) => {
     { name: "Home", href: "/" },
     { name: "About", href: "about" },
     { name: "Dashboard", href: "dashboard" },
+    { name: "Investors", href: "investors" },
     { name: "Contact Us", href: "contact" },
   ];
 

@@ -15,14 +15,21 @@ import {
   Eye,
   Camera,
   X,
+  MonitorPlay,
+  VideoIcon,
 } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Navigation } from "@/components/Navigation";
 
 const Dashboard = () => {
   const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [isLiveMode, setIsLiveMode] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -30,12 +37,62 @@ const Dashboard = () => {
       setUploadedVideo(file);
       const url = URL.createObjectURL(file);
       setVideoUrl(url);
+      setIsLiveMode(false);
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+        setStream(null);
+      }
     }
   };
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
+
+  const startLiveVideo = useCallback(async () => {
+    try {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode },
+        audio: true,
+      });
+
+      setStream(newStream);
+      setIsLiveMode(true);
+      setUploadedVideo(null);
+      if (videoUrl) {
+        URL.revokeObjectURL(videoUrl);
+        setVideoUrl(null);
+      }
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = newStream;
+      }
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      alert(
+        "Unable to access camera. Please ensure you have granted camera permissions."
+      );
+    }
+  }, [facingMode, stream, videoUrl]);
+
+  const stopLiveVideo = useCallback(() => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+    setIsLiveMode(false);
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  }, [stream]);
+
+  const switchCamera = useCallback(() => {
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
+  }, []);
 
   const handleRemoveVideo = () => {
     if (videoUrl) {
@@ -83,50 +140,119 @@ const Dashboard = () => {
                 onChange={handleVideoUpload}
                 className="hidden"
               />
-              {!uploadedVideo ? (
+
+              {!uploadedVideo && !isLiveMode ? (
                 <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                  <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <MonitorPlay className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground mb-4">
-                    Upload video file or connect live stream
+                    Start live video or upload video file
                   </p>
-                  <Button onClick={handleUploadClick}>
-                    <Upload className="h-4 w-4 mr-2" />
-                    Upload Video
-                  </Button>
+                  <div className="flex gap-2 justify-center">
+                    <Button
+                      onClick={startLiveVideo}
+                      className="flex-1 max-w-40"
+                    >
+                      <VideoIcon className="h-4 w-4 mr-2" />
+                      Live Video
+                    </Button>
+                    <Button
+                      onClick={handleUploadClick}
+                      variant="outline"
+                      className="flex-1 max-w-40"
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Upload Video
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div className="relative">
-                    <video
-                      src={videoUrl || undefined}
-                      controls
-                      className="w-full max-h-80 rounded-lg"
-                    >
-                      Your browser does not support the video tag.
-                    </video>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="absolute top-2 right-2"
-                      onClick={handleRemoveVideo}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                    {isLiveMode ? (
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className="w-full max-h-80 rounded-lg bg-black"
+                      />
+                    ) : (
+                      <video
+                        src={videoUrl || undefined}
+                        controls
+                        className="w-full max-h-80 rounded-lg"
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+
+                    {isLiveMode && (
+                      <>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2"
+                          onClick={stopLiveVideo}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="absolute top-2 left-2"
+                          onClick={switchCamera}
+                        >
+                          <Camera className="h-4 w-4" />
+                        </Button>
+                        <div className="absolute bottom-2 left-2 bg-red-600 text-white px-2 py-1 rounded text-xs">
+                          ● LIVE
+                        </div>
+                      </>
+                    )}
+
+                    {uploadedVideo && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-2 right-2"
+                        onClick={handleRemoveVideo}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
                   </div>
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>File: {uploadedVideo.name}</span>
-                    <span>
-                      Size: {(uploadedVideo.size / 1024 / 1024).toFixed(2)} MB
-                    </span>
+
+                  {uploadedVideo && (
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <span>File: {uploadedVideo.name}</span>
+                      <span>
+                        Size: {(uploadedVideo.size / 1024 / 1024).toFixed(2)} MB
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2">
+                    {!isLiveMode && (
+                      <Button
+                        onClick={startLiveVideo}
+                        variant="outline"
+                        className="flex-1"
+                      >
+                        <VideoIcon className="h-4 w-4 mr-2" />
+                        Switch to Live
+                      </Button>
+                    )}
+                    {!uploadedVideo && (
+                      <Button
+                        onClick={handleUploadClick}
+                        variant="outline"
+                        className="flex-1"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload Video
+                      </Button>
+                    )}
                   </div>
-                  <Button
-                    onClick={handleUploadClick}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    <Upload className="h-4 w-4 mr-2" />
-                    Upload Different Video
-                  </Button>
                 </div>
               )}
             </CardContent>
