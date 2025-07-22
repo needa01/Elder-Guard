@@ -5,6 +5,8 @@ import cameraSystemImage from "@/assets/camera-system.jpg";
 import emergencyServicesImage from "@/assets/emergency-services.jpg";
 import distressDetectionImage from "@/assets/distress-detection.jpg";
 import abusePreventionImage from "@/assets/abuse-prevention.jpg";
+import softwareModelsImage from "@/assets/software-models.jpg";
+import physiotherapyToolsImage from "@/assets/physiotherapy-tools.jpg";
 
 const About = () => {
   return (
@@ -429,68 +431,289 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Professional Monitoring Solutions
+              Complete Elder Care Ecosystem
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Enterprise-grade hardware designed specifically for elder care
-              environments
+              Comprehensive hardware and software solutions designed
+              specifically for elder care environments
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Camera Ecosystem */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
             <div>
               <img
                 src={cameraSystemImage}
                 alt="ElderGuard Camera System"
-                className="w-full rounded-lg shadow-lg"
+                className="w-full rounded-xl shadow-lg"
               />
             </div>
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Complete Camera Ecosystem
+                Smart Camera Ecosystem
               </h3>
               <div className="space-y-6">
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
+                    </svg>
                     Indoor Monitoring Cameras
                   </h4>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mb-3">
                     Discreet, privacy-conscious cameras with advanced AI
                     processing for fall detection, behavioral analysis, and
                     emergency recognition.
                   </p>
-                  <ul className="mt-2 text-sm text-gray-500">
+                  <ul className="text-sm text-gray-500 space-y-1">
                     <li>• 4K resolution with night vision</li>
                     <li>• Local AI processing for privacy</li>
                     <li>• Two-way communication</li>
+                    <li>• Motion tracking and alerts</li>
                   </ul>
                 </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
                     Outdoor Security Cameras
                   </h4>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mb-3">
                     Weather-resistant cameras for monitoring entrances, gardens,
                     and outdoor areas where seniors may spend time.
                   </p>
-                  <ul className="mt-2 text-sm text-gray-500">
+                  <ul className="text-sm text-gray-500 space-y-1">
                     <li>• Weatherproof IP67 rating</li>
                     <li>• Motion detection and alerts</li>
                     <li>• Solar power option available</li>
+                    <li>• Night vision up to 100ft</li>
                   </ul>
                 </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                      />
+                    </svg>
                     Wearable Devices
                   </h4>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mb-3">
                     Comfortable, water-resistant wearables with GPS tracking,
                     fall detection, and emergency buttons.
                   </p>
-                  <ul className="mt-2 text-sm text-gray-500">
+                  <ul className="text-sm text-gray-500 space-y-1">
                     <li>• 7-day battery life</li>
                     <li>• GPS and indoor positioning</li>
                     <li>• Medication reminders</li>
+                    <li>• Heart rate monitoring</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Physiotherapy Tools */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+            <div className="order-2 lg:order-1">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Physiotherapy & Exercise Tools
+              </h3>
+              <div className="space-y-6">
+                <div className="bg-blue-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-blue-600 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      />
+                    </svg>
+                    Smart Exercise Equipment
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    AI-powered exercise tools that adapt to individual
+                    capabilities and track progress over time.
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li>• Resistance bands with sensors</li>
+                    <li>• Balance training platforms</li>
+                    <li>• Smart therapy balls</li>
+                    <li>• Adaptive walking aids</li>
+                  </ul>
+                </div>
+
+                <div className="bg-green-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-green-600 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                    Progress Monitoring
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Real-time tracking of muscle strength, flexibility, and
+                    rehabilitation progress with detailed analytics.
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li>• Range of motion tracking</li>
+                    <li>• Strength measurement</li>
+                    <li>• Progress reports</li>
+                    <li>• Personalized exercise plans</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+              <img
+                src={physiotherapyToolsImage}
+                alt="Physiotherapy Tools and Equipment"
+                className="w-full rounded-xl shadow-lg"
+              />
+            </div>
+          </div>
+
+          {/* Software Models */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <img
+                src={softwareModelsImage}
+                alt="AI Software Models Dashboard"
+                className="w-full rounded-xl shadow-lg"
+              />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Advanced AI Software Models
+              </h3>
+              <div className="space-y-6">
+                <div className="bg-red-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-red-600 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
+                      />
+                    </svg>
+                    Fall Detection AI
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Machine learning models trained on thousands of fall
+                    scenarios for accurate detection and minimal false alarms.
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li>• Computer vision analysis</li>
+                    <li>• Real-time processing</li>
+                    <li>• Pattern recognition</li>
+                  </ul>
+                </div>
+
+                <div className="bg-orange-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-orange-600 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
+                      />
+                    </svg>
+                    Abuse Prevention AI
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Sensitive monitoring algorithms that detect signs of abuse
+                    while maintaining strict privacy protocols.
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li>• Behavioral analysis</li>
+                    <li>• Voice stress detection</li>
+                    <li>• Privacy-preserving monitoring</li>
+                  </ul>
+                </div>
+
+                <div className="bg-purple-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <svg
+                      className="w-5 h-5 text-purple-600 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                    Distress Recognition
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Natural language processing and voice analysis to detect
+                    calls for help and emotional distress.
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li>• Voice pattern analysis</li>
+                    <li>• Emotional state detection</li>
+                    <li>• Contextual understanding</li>
                   </ul>
                 </div>
               </div>
