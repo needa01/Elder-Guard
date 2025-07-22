@@ -1,5 +1,6 @@
 import { AlertTriangle, Heart, Users, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const features = [
   {
@@ -84,7 +85,9 @@ export const Features = () => {
 
         <div className="text-center mt-16">
           <Button variant="hero" size="xl">
+            <Link to="/about">
             View All Features
+            </Link>
           </Button>
         </div>
       </div>
