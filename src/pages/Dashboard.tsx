@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Upload,
   Video,
@@ -15,10 +16,11 @@ import {
   Eye,
   Camera,
   X,
-  MonitorPlay,
-  VideoIcon,
+  Play,
+  Square,
+  RotateCcw,
 } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 
 const Dashboard = () => {
@@ -27,6 +29,8 @@ const Dashboard = () => {
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [activeTab, setActiveTab] = useState("live-detection");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -55,10 +59,18 @@ const Dashboard = () => {
         stream.getTracks().forEach((track) => track.stop());
       }
 
-      const newStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode },
-        audio: true,
-      });
+      const constraints = {
+        video: {
+          facingMode,
+          width: { min: 640, ideal: 1280, max: 1920 },
+          height: { min: 480, ideal: 720, max: 1080 },
+        },
+        audio: false,
+      };
+
+      console.log("Requesting camera with constraints:", constraints);
+      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+      console.log("Camera stream obtained:", newStream);
 
       setStream(newStream);
       setIsLiveMode(true);
@@ -68,13 +80,26 @@ const Dashboard = () => {
         setVideoUrl(null);
       }
 
+      // Wait for video element to be ready
       if (videoRef.current) {
         videoRef.current.srcObject = newStream;
+        try {
+          await videoRef.current.play();
+          console.log("Video playback started successfully");
+        } catch (playError) {
+          console.warn("Autoplay failed, trying manual play:", playError);
+          // Fallback: try to play after user interaction
+          setTimeout(() => {
+            if (videoRef.current) {
+              videoRef.current.play().catch(console.error);
+            }
+          }, 100);
+        }
       }
     } catch (error) {
       console.error("Error accessing camera:", error);
       alert(
-        "Unable to access camera. Please ensure you have granted camera permissions."
+        "Unable to access camera. Please ensure you have granted camera permissions and your device has a camera."
       );
     }
   }, [facingMode, stream, videoUrl]);
@@ -85,14 +110,64 @@ const Dashboard = () => {
       setStream(null);
     }
     setIsLiveMode(false);
+    setIsDetecting(false);
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
   }, [stream]);
 
-  const switchCamera = useCallback(() => {
-    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
-  }, []);
+  const switchCamera = useCallback(async () => {
+    const newFacingMode = facingMode === "user" ? "environment" : "user";
+    setFacingMode(newFacingMode);
+
+    if (isLiveMode && stream) {
+      // Stop current stream
+      stream.getTracks().forEach((track) => track.stop());
+
+      try {
+        const constraints = {
+          video: {
+            facingMode: newFacingMode,
+            width: { min: 640, ideal: 1280, max: 1920 },
+            height: { min: 480, ideal: 720, max: 1080 },
+          },
+          audio: false,
+        };
+
+        console.log("Switching camera with constraints:", constraints);
+        const newStream = await navigator.mediaDevices.getUserMedia(
+          constraints
+        );
+        setStream(newStream);
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = newStream;
+          try {
+            await videoRef.current.play();
+            console.log("Camera switched successfully");
+          } catch (playError) {
+            console.warn("Autoplay failed after camera switch:", playError);
+            setTimeout(() => {
+              if (videoRef.current) {
+                videoRef.current.play().catch(console.error);
+              }
+            }, 100);
+          }
+        }
+      } catch (error) {
+        console.error("Error switching camera:", error);
+        alert("Unable to switch camera. Please try again.");
+      }
+    }
+  }, [facingMode, isLiveMode, stream]);
+
+  const startDetection = () => {
+    setIsDetecting(true);
+  };
+
+  const stopDetection = () => {
+    setIsDetecting(false);
+  };
 
   const handleRemoveVideo = () => {
     if (videoUrl) {
@@ -104,6 +179,18 @@ const Dashboard = () => {
       fileInputRef.current.value = "";
     }
   };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+      if (videoUrl) {
+        URL.revokeObjectURL(videoUrl);
+      }
+    };
+  }, [stream, videoUrl]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,7 +208,7 @@ const Dashboard = () => {
       {/* Dashboard Content */}
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Live Feed - Upload Video */}
+          {/* Live Feed with Tabs */}
           <Card className="lg:col-span-1">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -133,128 +220,181 @@ const Dashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="video/*"
-                onChange={handleVideoUpload}
-                className="hidden"
-              />
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+              >
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger
+                    value="live-detection"
+                    className="flex items-center gap-2"
+                  >
+                    <Camera className="h-4 w-4" />
+                    LIVE DETECTION
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="upload-video"
+                    className="flex items-center gap-2"
+                  >
+                    <Video className="h-4 w-4" />
+                    UPLOAD VIDEO
+                  </TabsTrigger>
+                </TabsList>
 
-              {!uploadedVideo && !isLiveMode ? (
-                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                  <MonitorPlay className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground mb-4">
-                    Start live video or upload video file
-                  </p>
-                  <div className="flex gap-2 justify-center">
-                    <Button
-                      onClick={startLiveVideo}
-                      className="flex-1 max-w-40"
-                    >
-                      <VideoIcon className="h-4 w-4 mr-2" />
-                      Live Video
-                    </Button>
-                    <Button
-                      onClick={handleUploadClick}
-                      variant="outline"
-                      className="flex-1 max-w-40"
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload Video
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="relative">
-                    {isLiveMode ? (
-                      <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="w-full max-h-80 rounded-lg bg-black"
-                      />
+                <TabsContent value="live-detection" className="mt-4">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">
+                      Real-Time Fall Detection with Webcam
+                    </h3>
+
+                    {!isLiveMode ? (
+                      <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+                        <Camera className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground mb-4">
+                          Start live camera feed for real-time detection
+                        </p>
+                        <Button
+                          onClick={startLiveVideo}
+                          className="flex items-center gap-2"
+                        >
+                          <Play className="h-4 w-4" />
+                          Start Camera
+                        </Button>
+                      </div>
                     ) : (
-                      <video
-                        src={videoUrl || undefined}
-                        controls
-                        className="w-full max-h-80 rounded-lg"
-                      >
-                        Your browser does not support the video tag.
-                      </video>
-                    )}
+                      <div className="space-y-4">
+                        <div className="relative">
+                          <video
+                            ref={videoRef}
+                            autoPlay
+                            playsInline
+                            muted
+                            className="w-full max-h-80 rounded-lg bg-black"
+                          />
 
-                    {isLiveMode && (
-                      <>
+                          {/* Camera Controls */}
+                          <div className="absolute top-2 right-2 flex gap-2">
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={switchCamera}
+                              title="Switch Camera"
+                            >
+                              <RotateCcw className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={stopLiveVideo}
+                              title="Stop Camera"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+
+                          {/* Live Indicator */}
+                          <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-medium">
+                            ● LIVE
+                          </div>
+
+                          {/* Detection Status */}
+                          {isDetecting && (
+                            <div className="absolute bottom-2 left-2 bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">
+                              🔍 DETECTING
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Detection Controls */}
+                        <div className="flex gap-2">
+                          {!isDetecting ? (
+                            <Button
+                              onClick={startDetection}
+                              className="flex-1 bg-blue-600 hover:bg-blue-700"
+                            >
+                              <Play className="h-4 w-4 mr-2" />
+                              START DETECTION
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={stopDetection}
+                              variant="outline"
+                              className="flex-1"
+                            >
+                              <Square className="h-4 w-4 mr-2" />
+                              STOP DETECTION
+                            </Button>
+                          )}
+                        </div>
+
+                        <p className="text-sm text-muted-foreground text-center">
+                          Camera: {facingMode === "user" ? "Front" : "Back"} |
+                          Status: {isDetecting ? "Monitoring" : "Standby"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="upload-video" className="mt-4">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="video/*"
+                    onChange={handleVideoUpload}
+                    className="hidden"
+                  />
+
+                  {!uploadedVideo ? (
+                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+                      <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-4">
+                        Upload video file for analysis
+                      </p>
+                      <Button onClick={handleUploadClick}>
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload Video
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <video
+                          src={videoUrl || undefined}
+                          controls
+                          className="w-full max-h-80 rounded-lg"
+                        >
+                          Your browser does not support the video tag.
+                        </video>
                         <Button
                           variant="destructive"
                           size="sm"
                           className="absolute top-2 right-2"
-                          onClick={stopLiveVideo}
+                          onClick={handleRemoveVideo}
                         >
                           <X className="h-4 w-4" />
                         </Button>
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          className="absolute top-2 left-2"
-                          onClick={switchCamera}
-                        >
-                          <Camera className="h-4 w-4" />
-                        </Button>
-                        <div className="absolute bottom-2 left-2 bg-red-600 text-white px-2 py-1 rounded text-xs">
-                          ● LIVE
-                        </div>
-                      </>
-                    )}
-
-                    {uploadedVideo && (
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="absolute top-2 right-2"
-                        onClick={handleRemoveVideo}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-
-                  {uploadedVideo && (
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>File: {uploadedVideo.name}</span>
-                      <span>
-                        Size: {(uploadedVideo.size / 1024 / 1024).toFixed(2)} MB
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="flex gap-2">
-                    {!isLiveMode && (
-                      <Button
-                        onClick={startLiveVideo}
-                        variant="outline"
-                        className="flex-1"
-                      >
-                        <VideoIcon className="h-4 w-4 mr-2" />
-                        Switch to Live
-                      </Button>
-                    )}
-                    {!uploadedVideo && (
+                      </div>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>File: {uploadedVideo.name}</span>
+                        <span>
+                          Size: {(uploadedVideo.size / 1024 / 1024).toFixed(2)}{" "}
+                          MB
+                        </span>
+                      </div>
                       <Button
                         onClick={handleUploadClick}
                         variant="outline"
-                        className="flex-1"
+                        className="w-full"
                       >
                         <Upload className="h-4 w-4 mr-2" />
-                        Upload Video
+                        Upload Different Video
                       </Button>
-                    )}
-                  </div>
-                </div>
-              )}
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
 
