@@ -33,7 +33,7 @@ const slides = [
     title: "Built by HHA's, Nurses",
     subtitle: "And Doctors Who Care",
     description: "Created by healthcare professionals who understand the challenges of elder care and the importance of reliable monitoring.",
-    ctaText: "Get Started Now",
+    ctaText: "Checkout",
     ctaVariant: "care" as const,
   },
 ];
@@ -128,7 +128,7 @@ export const HeroCarousel = () => {
                         {slide.ctaText}
                       </Button>
                       <Button variant="outline" size="xl" className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20">
-                        Watch Demo
+                        View Demo
                       </Button>
                     </div>
                   </div>
