@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Camera, Clock } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import Lottie from "lottie-react";
+import sensorAnimation from "@/assets/CCTV Camera.json";
 
 const Cameras = () => {
   return (
@@ -21,9 +23,12 @@ const Cameras = () => {
         <div className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto">
           <Card className="p-12 w-full backdrop-blur-sm border-border/50">
             <div className="flex justify-center mb-6">
-              <div className="relative">
-                <Camera className="h-16 w-16 text-primary" />
-                <Clock className="h-6 w-6 text-muted-foreground absolute -bottom-1 -right-1 bg-background rounded-full p-1" />
+              <div className="w-24 h-24">
+                <Lottie
+                  animationData={sensorAnimation}
+                  loop={true}
+                  className="w-full h-full"
+                />
               </div>
             </div>
 
@@ -69,7 +74,7 @@ const Cameras = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/">
+              <Link to="/about">
                 <Button size="lg" className="w-full sm:w-auto">
                   Explore Our Services
                 </Button>
