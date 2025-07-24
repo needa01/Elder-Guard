@@ -37,7 +37,7 @@ const Cameras = () => {
             </h1>
 
             <h2 className="text-2xl font-semibold text-foreground mb-6">
-              Coming Soon
+              In development
             </h2>
 
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">

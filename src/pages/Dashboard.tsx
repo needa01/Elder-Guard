@@ -478,7 +478,7 @@ const Dashboard = () => {
                     />
                   </div>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Coming Soon</h3>
+                <h3 className="font-semibold text-lg mb-2">In development</h3>
                 <p className="text-muted-foreground text-sm">
                   Advanced AI coaching features are in development
                 </p>
@@ -506,7 +506,7 @@ const Dashboard = () => {
                     />
                   </div>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Coming Soon</h3>
+                <h3 className="font-semibold text-lg mb-2">In development</h3>
                 <p className="text-muted-foreground text-sm">
                   Camera integration and monitoring features in development
                 </p>

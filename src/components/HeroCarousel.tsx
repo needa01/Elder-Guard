@@ -13,8 +13,8 @@ const slides = [
     title: "Detect Falls, Abuse, Distress in Real Time",
     subtitle: "Get Alerts With AI",
     description: "Advanced AI monitoring system that watches over your loved ones 24/7, providing instant alerts when help is needed most.",
-    ctaText: "Start Free Trial",
-    ctaVariant: "hero" as const,
+    ctaText: "Checkout",
+    ctaVariant: "care" as const,
   },
   {
     id: 2,
@@ -23,8 +23,8 @@ const slides = [
     title: "World's First AI Powered",
     subtitle: "Emergency Response Coach",
     description: "Intelligent guidance system that helps coordinate emergency responses, ensuring the fastest and most appropriate care.",
-    ctaText: "Book a Demo",
-    ctaVariant: "hero" as const,
+    ctaText: "Checkout",
+    ctaVariant: "care" as const,
   },
   {
     id: 3,
