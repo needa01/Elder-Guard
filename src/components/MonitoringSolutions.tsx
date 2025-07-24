@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import indoorCamera from "@/assets/product1.jpeg";
 import outdoorCamera from "@/assets/product2.jpeg";
+import { Link } from "react-router-dom";
+import Cameras from "@/pages/Cameras";
 
 const MonitoringSolutions = () => {
   return (
@@ -39,7 +41,7 @@ const MonitoringSolutions = () => {
                 size="lg"
                 className="w-full sm:w-auto px-8 py-3 text-base font-medium"
               >
-                Shop Now
+                <Link to="/cameras">Shop Now</Link>
               </Button>
             </CardContent>
           </Card>
@@ -67,7 +69,7 @@ const MonitoringSolutions = () => {
                 size="lg"
                 className="w-full sm:w-auto px-8 py-3 text-base font-medium"
               >
-                Shop Now
+                <Link to="/cameras">Shop Now</Link>
               </Button>
             </CardContent>
           </Card>

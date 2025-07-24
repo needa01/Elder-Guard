@@ -425,7 +425,7 @@ const Dashboard = () => {
                   </div>
                   <div className="bg-muted/50 rounded-lg p-4 text-center">
                     <Dumbbell className="h-6 w-6 text-primary mx-auto mb-2" />
-                    <p className="text-sm font-medium">Back</p>
+                    <p className="text-sm font-medium">Upper Back</p>
                     <p className="text-xs text-muted-foreground">Normal</p>
                   </div>
                 </div>
