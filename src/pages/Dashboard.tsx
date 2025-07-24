@@ -22,6 +22,10 @@ import {
 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
+import Lottie from "lottie-react";
+import coachAnimation from '@/assets/Coach.json'
+import cameraAnimation from "@/assets/CCTV Camera.json";
+
 
 const Dashboard = () => {
   const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
@@ -465,8 +469,14 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-center py-8">
-                <div className="bg-muted/50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                  <Brain className="h-12 w-12 text-muted-foreground" />
+                <div className=" rounded-full p-2 -mt-4  mx-auto mb-4 flex items-center justify-center">
+                  <div className=" h-44 w-44">
+                    <Lottie
+                      animationData={coachAnimation}
+                      loop={true}
+                      className="w-full h-full"
+                    />
+                  </div>
                 </div>
                 <h3 className="font-semibold text-lg mb-2">Coming Soon</h3>
                 <p className="text-muted-foreground text-sm">
@@ -487,8 +497,14 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-center py-8">
-                <div className="bg-muted/50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                  <Eye className="h-12 w-12 text-muted-foreground" />
+                <div className=" rounded-full p-2 -mt-4 mx-auto mb-4 flex items-center justify-center">
+                  <div className=" h-44 w-44">
+                    <Lottie
+                      animationData={cameraAnimation}
+                      loop={true}
+                      className="w-full h-full"
+                    />
+                  </div>
                 </div>
                 <h3 className="font-semibold text-lg mb-2">Coming Soon</h3>
                 <p className="text-muted-foreground text-sm">
