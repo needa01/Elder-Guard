@@ -23,9 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import distress from '@/assets/distress.mp4';
-import distress3 from "@/assets/distress3.mp4";
-import distress2 from "@/assets/distress2.mp4";
 import {
   Upload,
   Video,
@@ -46,16 +43,20 @@ import {
   Clock,
   Download,
   FileVideo,
+  ChevronDown,
 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import Lottie from "lottie-react";
-import coachAnimation from '@/assets/Coach.json'
+import coachAnimation from "@/assets/Coach.json";
 import cameraAnimation from "@/assets/CCTV Camera.json";
 import { Link } from "react-router-dom";
 import networkAnimation from "@/assets/Technology Network.json";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import distress from '@/assets/distress.mp4';
+import distress2 from '@/assets/distress2.mp4';
+import distress3 from '@/assets/distress3.mp4';
 
 interface VisitEntry {
   id: string;
@@ -83,9 +84,12 @@ const Dashboard = () => {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [isDetecting, setIsDetecting] = useState(false);
   const [activeTab, setActiveTab] = useState("live-detection");
+  const [expandedVideoId, setExpandedVideoId] = useState<string | null>(null);
 
   // Calendar state
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
   const [relation, setRelation] = useState("");
   const [note, setNote] = useState("");
   const [visits, setVisits] = useState<VisitEntry[]>([]);
@@ -148,17 +152,17 @@ const Dashboard = () => {
       const response = await fetch(video.videoUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
+      const a = document.createElement("a");
+      a.style.display = "none";
       a.href = url;
-      a.download = `${video.title.replace(/\s+/g, '_')}.mp4`;
+      a.download = `${video.title.replace(/\s+/g, "_")}.mp4`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
-      console.error('Error downloading video:', error);
-      alert('Failed to download video. Please try again.');
+      console.error("Error downloading video:", error);
+      alert("Failed to download video. Please try again.");
     }
   };
 
@@ -291,7 +295,11 @@ const Dashboard = () => {
 
   const handleDateSelect = (date: Date | undefined) => {
     // Toggle selection if clicking the same date
-    if (selectedDate && date && selectedDate.toDateString() === date.toDateString()) {
+    if (
+      selectedDate &&
+      date &&
+      selectedDate.toDateString() === date.toDateString()
+    ) {
       setSelectedDate(undefined);
       setShowAddVisit(false);
     } else {
@@ -321,8 +329,8 @@ const Dashboard = () => {
   };
 
   const getVisitsForDate = (date: Date) => {
-    return visits.filter(visit => 
-      format(visit.date, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
+    return visits.filter(
+      (visit) => format(visit.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
     );
   };
 
@@ -331,7 +339,11 @@ const Dashboard = () => {
   };
 
   const handleRemoveVisit = (visitId: string) => {
-    setVisits(visits.filter(visit => visit.id !== visitId));
+    setVisits(visits.filter((visit) => visit.id !== visitId));
+  };
+
+  const toggleVideoExpansion = (videoId: string) => {
+    setExpandedVideoId(expandedVideoId === videoId ? null : videoId);
   };
 
   // Cleanup on unmount
@@ -393,7 +405,8 @@ const Dashboard = () => {
                     },
                   }}
                   modifiersClassNames={{
-                    selected: "!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground",
+                    selected:
+                      "!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground",
                   }}
                 />
               </div>
@@ -438,19 +451,23 @@ const Dashboard = () => {
                 {/* All Visits or Selected Date Visits */}
                 <div className="space-y-3">
                   <h3 className="font-semibold">
-                    {selectedDate 
+                    {selectedDate
                       ? `Visits for ${format(selectedDate, "PPP")}`
                       : "All Scheduled Visits"}
                   </h3>
-                  {(selectedDate ? getVisitsForDate(selectedDate) : visits).length === 0 ? (
+                  {(selectedDate ? getVisitsForDate(selectedDate) : visits)
+                    .length === 0 ? (
                     <p className="text-muted-foreground text-sm">
-                      {selectedDate 
-                        ? "No visits scheduled for this date." 
+                      {selectedDate
+                        ? "No visits scheduled for this date."
                         : "No visits scheduled yet."}
                     </p>
                   ) : (
                     <div className="space-y-2">
-                      {(selectedDate ? getVisitsForDate(selectedDate) : visits).map((visit) => (
+                      {(selectedDate
+                        ? getVisitsForDate(selectedDate)
+                        : visits
+                      ).map((visit) => (
                         <div
                           key={visit.id}
                           className="bg-muted/50 rounded-lg p-3"
@@ -695,56 +712,84 @@ const Dashboard = () => {
                 <p className="text-sm text-muted-foreground">
                   Download these example videos to test the upload functionality
                 </p>
-                
+
                 {exampleVideos.map((video) => (
-                  <div key={video.id} className="border rounded-lg p-4 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-16 h-12 bg-muted/50 rounded flex items-center justify-center">
-                        <Video className="h-6 w-6 text-muted-foreground" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm truncate">{video.title}</h4>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {video.description}
-                        </p>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {video.duration}
-                          </span>
-                          <span>{video.fileSize}</span>
+                  <div
+                    key={video.id}
+                    className="border rounded-lg overflow-hidden"
+                  >
+                    {/* Compact header with video name, size, and arrow */}
+                    <div
+                      className="flex items-center justify-between p-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                      onClick={() => toggleVideoExpansion(video.id)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Video className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <h4 className="font-medium text-sm">{video.title}</h4>
+                          <p className="text-xs text-muted-foreground">
+                            {video.fileSize}
+                          </p>
                         </div>
                       </div>
+                      <ChevronDown
+                        className={cn(
+                          "h-4 w-4 text-muted-foreground transition-transform duration-200",
+                          expandedVideoId === video.id && "rotate-180"
+                        )}
+                      />
                     </div>
-                    
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1"
-                        onClick={() => {
-                          // Preview functionality could be added here
-                          window.open(video.videoUrl, '_blank');
-                        }}
-                      >
-                        <Play className="h-3 w-3 mr-1" />
-                        Preview
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="flex-1"
-                        onClick={() => handleDownloadExample(video)}
-                      >
-                        <Download className="h-3 w-3 mr-1" />
-                        Download
-                      </Button>
-                    </div>
+
+                    {/* Expanded preview section */}
+                    {expandedVideoId === video.id && (
+                      <div className="border-t bg-muted/20 p-3 space-y-3">
+                        {/* Video Player */}
+                        <div className="relative">
+                          <video
+                            src={video.videoUrl}
+                            controls
+                            className="w-full max-h-60 rounded-lg bg-black"
+                            preload="metadata"
+                          >
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
+
+                        {/* Video Details */}
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground font-medium">
+                            {video.title}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {video.description}
+                          </p>
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {video.duration}
+                            </span>
+                            <span>{video.fileSize}</span>
+                          </div>
+                        </div>
+
+                        {/* Download Button */}
+                        <Button
+                          size="sm"
+                          className="w-full"
+                          onClick={() => handleDownloadExample(video)}
+                        >
+                          <Download className="h-3 w-3 mr-2" />
+                          Download Video
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 ))}
-                
+
                 <div className="bg-muted/50 rounded-lg p-3 text-center">
                   <p className="text-xs text-muted-foreground">
-                    💡 After downloading, use the "Upload Video" tab to test detection
+                    💡 After downloading, use the "Upload Video" tab to test
+                    detection
                   </p>
                 </div>
               </div>
