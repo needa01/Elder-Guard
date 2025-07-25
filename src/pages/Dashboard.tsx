@@ -7,6 +7,22 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Upload,
   Video,
@@ -21,15 +37,28 @@ import {
   Square,
   RotateCcw,
   ArrowRight,
+  Calendar as CalendarIcon,
+  Plus,
+  User,
+  Clock,
 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import Lottie from "lottie-react";
-import coachAnimation from '@/assets/Coach.json'
+import coachAnimation from "@/assets/Coach.json";
 import cameraAnimation from "@/assets/CCTV Camera.json";
 import { Link } from "react-router-dom";
-import networkAnimation from "@/assets/Technology Network.json"
+import networkAnimation from "@/assets/Technology Network.json";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
+interface VisitEntry {
+  id: string;
+  date: Date;
+  relation: string;
+  note: string;
+  createdAt: Date;
+}
 
 const Dashboard = () => {
   const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
@@ -39,6 +68,15 @@ const Dashboard = () => {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [isDetecting, setIsDetecting] = useState(false);
   const [activeTab, setActiveTab] = useState("live-detection");
+
+  // Calendar state
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
+  const [relation, setRelation] = useState("");
+  const [note, setNote] = useState("");
+  const [visits, setVisits] = useState<VisitEntry[]>([]);
+  const [showAddVisit, setShowAddVisit] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -188,6 +226,55 @@ const Dashboard = () => {
     }
   };
 
+  const handleDateSelect = (date: Date | undefined) => {
+    // Toggle selection if clicking the same date
+    if (
+      selectedDate &&
+      date &&
+      selectedDate.toDateString() === date.toDateString()
+    ) {
+      setSelectedDate(undefined);
+      setShowAddVisit(false);
+    } else {
+      setSelectedDate(date);
+      setShowAddVisit(!!date);
+    }
+  };
+
+  const handleAddVisit = () => {
+    if (!selectedDate || !relation.trim() || !note.trim()) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    const newVisit: VisitEntry = {
+      id: Date.now().toString(),
+      date: selectedDate,
+      relation: relation.trim(),
+      note: note.trim(),
+      createdAt: new Date(),
+    };
+
+    setVisits([...visits, newVisit]);
+    setRelation("");
+    setNote("");
+    // Don't close the form, allow multiple visits to be added
+  };
+
+  const getVisitsForDate = (date: Date) => {
+    return visits.filter(
+      (visit) => format(visit.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
+    );
+  };
+
+  const hasVisitOnDate = (date: Date) => {
+    return getVisitsForDate(date).length > 0;
+  };
+
+  const handleRemoveVisit = (visitId: string) => {
+    setVisits(visits.filter((visit) => visit.id !== visitId));
+  };
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -213,8 +300,140 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Dashboard Content */}
+      {/* Advanced Calendar */}
       <div className="container mx-auto px-4 py-8">
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CalendarIcon className="h-5 w-5 text-primary" />
+              Advanced Calendar
+            </CardTitle>
+            <CardDescription>
+              Schedule visits and monitor alerts with our calendar
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Calendar */}
+              <div>
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={handleDateSelect}
+                  className={cn("rounded-md border pointer-events-auto")}
+                  modifiers={{
+                    hasVisit: (date) => hasVisitOnDate(date),
+                  }}
+                  modifiersStyles={{
+                    hasVisit: {
+                      backgroundColor: "hsl(var(--accent))",
+                      color: "hsl(var(--accent-foreground))",
+                      fontWeight: "bold",
+                      borderRadius: "6px",
+                      border: "2px solid hsl(var(--accent-foreground) / 0.3)",
+                    },
+                  }}
+                  modifiersClassNames={{
+                    selected:
+                      "!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground",
+                  }}
+                />
+              </div>
+
+              {/* Visit Form and List */}
+              <div className="space-y-6">
+                {/* Add Visit Form */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold">Schedule a Visit</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-sm font-medium mb-1 block">
+                        Your relation to patient
+                      </label>
+                      <Input
+                        placeholder="e.g., son, daughter, caregiver..."
+                        value={relation}
+                        onChange={(e) => setRelation(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-1 block">
+                        Note
+                      </label>
+                      <Textarea
+                        placeholder="Add any notes about your visit..."
+                        value={note}
+                        onChange={(e) => setNote(e.target.value)}
+                        rows={3}
+                      />
+                    </div>
+                    <Button onClick={handleAddVisit} className="w-full">
+                      <CalendarIcon className="h-4 w-4 mr-2" />
+                      Schedule Visit for{" "}
+                      {selectedDate
+                        ? format(selectedDate, "PPP")
+                        : "Selected Date"}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* All Visits or Selected Date Visits */}
+                <div className="space-y-3">
+                  <h3 className="font-semibold">
+                    {selectedDate
+                      ? `Visits for ${format(selectedDate, "PPP")}`
+                      : "All Scheduled Visits"}
+                  </h3>
+                  {(selectedDate ? getVisitsForDate(selectedDate) : visits)
+                    .length === 0 ? (
+                    <p className="text-muted-foreground text-sm">
+                      {selectedDate
+                        ? "No visits scheduled for this date."
+                        : "No visits scheduled yet."}
+                    </p>
+                  ) : (
+                    <div className="space-y-2">
+                      {(selectedDate
+                        ? getVisitsForDate(selectedDate)
+                        : visits
+                      ).map((visit) => (
+                        <div
+                          key={visit.id}
+                          className="bg-muted/50 rounded-lg p-3"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <p className="font-medium text-sm">
+                                {visit.relation}
+                              </p>
+                              <p className="text-muted-foreground text-xs">
+                                {visit.note}
+                              </p>
+                              {!selectedDate && (
+                                <p className="text-muted-foreground text-xs mt-1">
+                                  📅 {format(visit.date, "PPP")}
+                                </p>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveVisit(visit.id)}
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Dashboard Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Live Feed with Tabs */}
           <Card className="lg:col-span-1">
