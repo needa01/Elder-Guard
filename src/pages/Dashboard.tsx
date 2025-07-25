@@ -373,8 +373,8 @@ const Dashboard = () => {
 
       {/* Advanced Calendar */}
       <div className="container mx-auto px-4 py-8">
-        <Card className="mb-8">
-          <CardHeader>
+        {/* <Card className="mb-8"> */}
+        {/* <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CalendarIcon className="h-5 w-5 text-primary" />
               Advanced Calendar
@@ -382,11 +382,11 @@ const Dashboard = () => {
             <CardDescription>
               Schedule visits and monitor alerts with our calendar
             </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Calendar */}
-              <div>
+          </CardHeader> */}
+        {/* <CardContent> */}
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6"> */}
+        {/* Calendar */}
+        {/* <div>
                 <Calendar
                   mode="single"
                   selected={selectedDate}
@@ -409,12 +409,12 @@ const Dashboard = () => {
                       "!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground",
                   }}
                 />
-              </div>
+              </div> */}
 
-              {/* Visit Form and List */}
-              <div className="space-y-6">
-                {/* Add Visit Form */}
-                <div className="space-y-4">
+        {/* Visit Form and List */}
+        {/* <div className="space-y-6"> */}
+        {/* Add Visit Form */}
+        {/* <div className="space-y-4">
                   <h3 className="font-semibold">Schedule a Visit</h3>
                   <div className="space-y-3">
                     <div>
@@ -446,10 +446,10 @@ const Dashboard = () => {
                         : "Selected Date"}
                     </Button>
                   </div>
-                </div>
+                </div> */}
 
-                {/* All Visits or Selected Date Visits */}
-                <div className="space-y-3">
+        {/* All Visits or Selected Date Visits */}
+        {/* <div className="space-y-3">
                   <h3 className="font-semibold">
                     {selectedDate
                       ? `Visits for ${format(selectedDate, "PPP")}`
@@ -498,11 +498,11 @@ const Dashboard = () => {
                       ))}
                     </div>
                   )}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                </div> */}
+        {/* </div> */}
+        {/* </div> */}
+        {/* </CardContent> */}
+        {/* </Card> */}
 
         {/* Dashboard Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -791,6 +791,137 @@ const Dashboard = () => {
                     💡 After downloading, use the "Upload Video" tab to test
                     detection
                   </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CalendarIcon className="h-5 w-5 text-primary" />
+                Advanced Calendar
+              </CardTitle>
+              <CardDescription>
+                Schedule visits and monitor alerts with our calendar
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Calendar */}
+                <div>
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={handleDateSelect}
+                    className={cn("rounded-md border pointer-events-auto")}
+                    modifiers={{
+                      hasVisit: (date) => hasVisitOnDate(date),
+                    }}
+                    modifiersStyles={{
+                      hasVisit: {
+                        backgroundColor: "hsl(var(--accent))",
+                        color: "hsl(var(--accent-foreground))",
+                        fontWeight: "bold",
+                        borderRadius: "6px",
+                        border: "2px solid hsl(var(--accent-foreground) / 0.3)",
+                      },
+                    }}
+                    modifiersClassNames={{
+                      selected:
+                        "!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground",
+                    }}
+                  />
+                </div>
+
+                {/* Visit Form and List */}
+                <div className="space-y-6">
+                  {/* Add Visit Form */}
+                  <div className="space-y-4">
+                    <h3 className="font-semibold">Schedule a Visit</h3>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-medium mb-1 block">
+                          Your relation to patient
+                        </label>
+                        <Input
+                          placeholder="e.g., son, daughter, caregiver..."
+                          value={relation}
+                          onChange={(e) => setRelation(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-1 block">
+                          Note
+                        </label>
+                        <Textarea
+                          placeholder="Add any notes about your visit..."
+                          value={note}
+                          onChange={(e) => setNote(e.target.value)}
+                          rows={3}
+                        />
+                      </div>
+                      <Button onClick={handleAddVisit} className="w-full">
+                        <CalendarIcon className="h-4 w-4 mr-2" />
+                        Schedule Visit for{" "}
+                        {selectedDate
+                          ? format(selectedDate, "PPP")
+                          : "Selected Date"}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* All Visits or Selected Date Visits */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold">
+                      {selectedDate
+                        ? `Visits for ${format(selectedDate, "PPP")}`
+                        : "All Scheduled Visits"}
+                    </h3>
+                    {(selectedDate ? getVisitsForDate(selectedDate) : visits)
+                      .length === 0 ? (
+                      <p className="text-muted-foreground text-sm">
+                        {selectedDate
+                          ? "No visits scheduled for this date."
+                          : "No visits scheduled yet."}
+                      </p>
+                    ) : (
+                      <div className="space-y-2">
+                        {(selectedDate
+                          ? getVisitsForDate(selectedDate)
+                          : visits
+                        ).map((visit) => (
+                          <div
+                            key={visit.id}
+                            className="bg-muted/50 rounded-lg p-3"
+                          >
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <p className="font-medium text-sm">
+                                  {visit.relation}
+                                </p>
+                                <p className="text-muted-foreground text-xs">
+                                  {visit.note}
+                                </p>
+                                {!selectedDate && (
+                                  <p className="text-muted-foreground text-xs mt-1">
+                                    📅 {format(visit.date, "PPP")}
+                                  </p>
+                                )}
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleRemoveVisit(visit.id)}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </CardContent>
