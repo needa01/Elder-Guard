@@ -23,6 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import distress from '@/assets/distress.mp4';
+import distress3 from "@/assets/distress3.mp4";
+import distress2 from "@/assets/distress2.mp4";
 import {
   Upload,
   Video,
@@ -99,8 +102,8 @@ const Dashboard = () => {
       description: "Sample fall detection scenario in kitchen environment",
       duration: "0:45",
       thumbnail: "/placeholder.svg",
-      videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4",
-      fileSize: "2.3 MB"
+      videoUrl: distress,
+      fileSize: "2.3 MB",
     },
     {
       id: "2",
@@ -108,8 +111,8 @@ const Dashboard = () => {
       description: "Fall detection sample with multiple angles",
       duration: "1:12",
       thumbnail: "/placeholder.svg",
-      videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_2mb.mp4",
-      fileSize: "3.1 MB"
+      videoUrl: distress2,
+      fileSize: "3.1 MB",
     },
     {
       id: "3",
@@ -117,9 +120,9 @@ const Dashboard = () => {
       description: "Normal movement for comparison and testing",
       duration: "0:38",
       thumbnail: "/placeholder.svg",
-      videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4",
-      fileSize: "1.8 MB"
-    }
+      videoUrl: distress3,
+      fileSize: "1.8 MB",
+    },
   ];
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
