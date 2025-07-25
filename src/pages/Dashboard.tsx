@@ -41,11 +41,13 @@ import {
   Plus,
   User,
   Clock,
+  Download,
+  FileVideo,
 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import Lottie from "lottie-react";
-import coachAnimation from "@/assets/Coach.json";
+import coachAnimation from '@/assets/Coach.json'
 import cameraAnimation from "@/assets/CCTV Camera.json";
 import { Link } from "react-router-dom";
 import networkAnimation from "@/assets/Technology Network.json";
@@ -60,6 +62,16 @@ interface VisitEntry {
   createdAt: Date;
 }
 
+interface ExampleVideo {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  thumbnail: string;
+  videoUrl: string;
+  fileSize: string;
+}
+
 const Dashboard = () => {
   const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -70,9 +82,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("live-detection");
 
   // Calendar state
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date()
-  );
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [relation, setRelation] = useState("");
   const [note, setNote] = useState("");
   const [visits, setVisits] = useState<VisitEntry[]>([]);
@@ -80,6 +90,37 @@ const Dashboard = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Example videos for testing
+  const exampleVideos: ExampleVideo[] = [
+    {
+      id: "1",
+      title: "Elderly Fall - Kitchen",
+      description: "Sample fall detection scenario in kitchen environment",
+      duration: "0:45",
+      thumbnail: "/placeholder.svg",
+      videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4",
+      fileSize: "2.3 MB"
+    },
+    {
+      id: "2",
+      title: "Elderly Fall - Living Room",
+      description: "Fall detection sample with multiple angles",
+      duration: "1:12",
+      thumbnail: "/placeholder.svg",
+      videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_2mb.mp4",
+      fileSize: "3.1 MB"
+    },
+    {
+      id: "3",
+      title: "Normal Activity - Walking",
+      description: "Normal movement for comparison and testing",
+      duration: "0:38",
+      thumbnail: "/placeholder.svg",
+      videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4",
+      fileSize: "1.8 MB"
+    }
+  ];
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -97,6 +138,25 @@ const Dashboard = () => {
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleDownloadExample = async (video: ExampleVideo) => {
+    try {
+      const response = await fetch(video.videoUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `${video.title.replace(/\s+/g, '_')}.mp4`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading video:', error);
+      alert('Failed to download video. Please try again.');
+    }
   };
 
   const startLiveVideo = useCallback(async () => {
@@ -228,11 +288,7 @@ const Dashboard = () => {
 
   const handleDateSelect = (date: Date | undefined) => {
     // Toggle selection if clicking the same date
-    if (
-      selectedDate &&
-      date &&
-      selectedDate.toDateString() === date.toDateString()
-    ) {
+    if (selectedDate && date && selectedDate.toDateString() === date.toDateString()) {
       setSelectedDate(undefined);
       setShowAddVisit(false);
     } else {
@@ -262,8 +318,8 @@ const Dashboard = () => {
   };
 
   const getVisitsForDate = (date: Date) => {
-    return visits.filter(
-      (visit) => format(visit.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
+    return visits.filter(visit => 
+      format(visit.date, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
     );
   };
 
@@ -272,7 +328,7 @@ const Dashboard = () => {
   };
 
   const handleRemoveVisit = (visitId: string) => {
-    setVisits(visits.filter((visit) => visit.id !== visitId));
+    setVisits(visits.filter(visit => visit.id !== visitId));
   };
 
   // Cleanup on unmount
@@ -334,8 +390,7 @@ const Dashboard = () => {
                     },
                   }}
                   modifiersClassNames={{
-                    selected:
-                      "!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground",
+                    selected: "!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground",
                   }}
                 />
               </div>
@@ -380,23 +435,19 @@ const Dashboard = () => {
                 {/* All Visits or Selected Date Visits */}
                 <div className="space-y-3">
                   <h3 className="font-semibold">
-                    {selectedDate
+                    {selectedDate 
                       ? `Visits for ${format(selectedDate, "PPP")}`
                       : "All Scheduled Visits"}
                   </h3>
-                  {(selectedDate ? getVisitsForDate(selectedDate) : visits)
-                    .length === 0 ? (
+                  {(selectedDate ? getVisitsForDate(selectedDate) : visits).length === 0 ? (
                     <p className="text-muted-foreground text-sm">
-                      {selectedDate
-                        ? "No visits scheduled for this date."
+                      {selectedDate 
+                        ? "No visits scheduled for this date." 
                         : "No visits scheduled yet."}
                     </p>
                   ) : (
                     <div className="space-y-2">
-                      {(selectedDate
-                        ? getVisitsForDate(selectedDate)
-                        : visits
-                      ).map((visit) => (
+                      {(selectedDate ? getVisitsForDate(selectedDate) : visits).map((visit) => (
                         <div
                           key={visit.id}
                           className="bg-muted/50 rounded-lg p-3"
@@ -622,6 +673,78 @@ const Dashboard = () => {
                   )}
                 </TabsContent>
               </Tabs>
+            </CardContent>
+          </Card>
+
+          {/* Examples Section */}
+          <Card className="lg:col-span-1">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileVideo className="h-5 w-5 text-primary" />
+                Examples
+              </CardTitle>
+              <CardDescription>
+                Download sample videos to test fall detection
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Download these example videos to test the upload functionality
+                </p>
+                
+                {exampleVideos.map((video) => (
+                  <div key={video.id} className="border rounded-lg p-4 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 h-12 bg-muted/50 rounded flex items-center justify-center">
+                        <Video className="h-6 w-6 text-muted-foreground" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-sm truncate">{video.title}</h4>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {video.description}
+                        </p>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {video.duration}
+                          </span>
+                          <span>{video.fileSize}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          // Preview functionality could be added here
+                          window.open(video.videoUrl, '_blank');
+                        }}
+                      >
+                        <Play className="h-3 w-3 mr-1" />
+                        Preview
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => handleDownloadExample(video)}
+                      >
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                
+                <div className="bg-muted/50 rounded-lg p-3 text-center">
+                  <p className="text-xs text-muted-foreground">
+                    💡 After downloading, use the "Upload Video" tab to test detection
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
