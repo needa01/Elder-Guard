@@ -14,17 +14,21 @@ import {
   Brain,
   Dumbbell,
   Eye,
+  HelpCircle,
   Camera,
   X,
   Play,
   Square,
   RotateCcw,
+  ArrowRight,
 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import Lottie from "lottie-react";
 import coachAnimation from '@/assets/Coach.json'
 import cameraAnimation from "@/assets/CCTV Camera.json";
+import { Link } from "react-router-dom";
+import networkAnimation from "@/assets/Technology Network.json"
 
 
 const Dashboard = () => {
@@ -510,6 +514,45 @@ const Dashboard = () => {
                 <p className="text-muted-foreground text-sm">
                   Camera integration and monitoring features in development
                 </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Support & Installation */}
+          <Card className="lg:col-span-1">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <HelpCircle className="h-5 w-5 text-primary" />
+                Support & Installation
+              </CardTitle>
+              <CardDescription>
+                Help with camera setup and Raspberry Pi integration
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <div className=" rounded-full p-2 -mt-4 mx-auto mb-4 flex items-center justify-center">
+                  <div className=" h-40 w-40">
+                    <Lottie
+                      animationData={networkAnimation}
+                      loop={true}
+                      className="w-full h-full"
+                    />
+                  </div>
+                </div>
+                <h3 className="font-semibold text-lg mb-2">Need Help?</h3>
+                <p className="text-muted-foreground text-sm mb-4">
+                  Learn about camera setup, Raspberry Pi integration, and system
+                  requirements
+                </p>
+                <Link to="/faq">
+                  <Button className="animate-fade-in hover-scale">
+                    {/* <HelpCircle className="h-4 w-4 mr-2" /> */}
+                    View FAQ
+                    <HelpCircle className="h-4 w-4 mr-2" />
+                    {/* <ArrowRight className="h-4 w-4 ml-2" /> */}
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
