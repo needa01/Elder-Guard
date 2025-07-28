@@ -166,56 +166,55 @@ const Dashboard = () => {
     }
   };
 
-  const startLiveVideo = useCallback(async () => {
-    try {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-
-      const constraints = {
-        video: {
-          facingMode,
-          width: { min: 640, ideal: 1280, max: 1920 },
-          height: { min: 480, ideal: 720, max: 1080 },
-        },
-        audio: false,
-      };
-
-      console.log("Requesting camera with constraints:", constraints);
-      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
-      console.log("Camera stream obtained:", newStream);
-
-      setStream(newStream);
-      setIsLiveMode(true);
-      setUploadedVideo(null);
-      if (videoUrl) {
-        URL.revokeObjectURL(videoUrl);
-        setVideoUrl(null);
-      }
-
-      // Wait for video element to be ready
-      if (videoRef.current) {
-        videoRef.current.srcObject = newStream;
-        try {
-          await videoRef.current.play();
-          console.log("Video playback started successfully");
-        } catch (playError) {
-          console.warn("Autoplay failed, trying manual play:", playError);
-          // Fallback: try to play after user interaction
-          setTimeout(() => {
-            if (videoRef.current) {
-              videoRef.current.play().catch(console.error);
-            }
-          }, 100);
-        }
-      }
-    } catch (error) {
-      console.error("Error accessing camera:", error);
-      alert(
-        "Unable to access camera. Please ensure you have granted camera permissions and your device has a camera."
-      );
+const startLiveVideo = useCallback(async () => {
+  try {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
     }
-  }, [facingMode, stream, videoUrl]);
+
+    const constraints = {
+      video: {
+        facingMode,
+        width: { min: 640, ideal: 1280, max: 1920 },
+        height: { min: 480, ideal: 720, max: 1080 },
+      },
+      audio: false,
+    };
+
+    const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+    setStream(newStream);
+    setIsLiveMode(true);
+    setUploadedVideo(null);
+
+    // Cleanup previous videoUrl
+    if (videoUrl) {
+      URL.revokeObjectURL(videoUrl);
+      setVideoUrl(null);
+    }
+
+    // Attach stream to video and wait for metadata
+    if (videoRef.current) {
+      videoRef.current.srcObject = newStream;
+
+      videoRef.current.onloadedmetadata = async () => {
+        try {
+          await videoRef.current?.play();
+        } catch (playError) {
+          console.warn(
+            "Autoplay failed, will require user interaction",
+            playError
+          );
+        }
+      };
+    }
+  } catch (error) {
+    console.error("Error accessing camera:", error);
+    alert(
+      "Unable to access camera. Please ensure you have granted camera permissions and your device has a camera."
+    );
+  }
+}, [facingMode, stream, videoUrl]);
+
 
   const stopLiveVideo = useCallback(() => {
     if (stream) {

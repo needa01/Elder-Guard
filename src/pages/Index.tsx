@@ -6,6 +6,7 @@ import { CallToAction } from "@/components/CallToAction";
 import { Footer } from "@/components/Footer";
 import MonitoringSolutions from "@/components/MonitoringSolutions";
 import { PricingOffer } from "@/components/PricingOffer";
+import { Competitions } from "@/components/Competitions";
 
 const Index = () => {
   return (
@@ -13,7 +14,8 @@ const Index = () => {
       <Navigation forceScrolledState />
       <HeroCarousel />
       <MonitoringSolutions />
-      <Features />
+      <Competitions/>
+      {/* <Features /> */}
       {/* <Testimonials /> */}
       <PricingOffer />
       <CallToAction />

@@ -69,6 +69,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        "competitor-card": "hsl(var(--competitor-card))",
+        "competitor-border": "hsl(var(--competitor-border))",
+        "limitation-text": "hsl(var(--limitation-text))",
+        "feature-card": "hsl(var(--feature-card))",
+        "feature-accent": "hsl(var(--feature-accent))",
       },
       borderRadius: {
         lg: "var(--radius)",
