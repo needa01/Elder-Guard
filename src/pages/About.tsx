@@ -312,7 +312,7 @@ const About = () => {
             </Card>
           </div>
 
-          {/* Emergency Response */}
+          {/* Emergency Response
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="grid lg:grid-cols-2 gap-0">
               <div className="p-8 lg:p-12">
@@ -422,7 +422,7 @@ const About = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
