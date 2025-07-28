@@ -86,6 +86,25 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("live-detection");
   const [expandedVideoId, setExpandedVideoId] = useState<string | null>(null);
 
+  
+const handleSuggestedVideoUpload = (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = event.target.files?.[0];
+  if (file && file.type.startsWith("video/")) {
+    console.log("✅ Suggested video received:", file.name);
+    // You can handle uploading to your backend here
+    alert("Thanks for your submission! Our team will review your video soon.");
+
+    // Clear file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  } else {
+    alert("Please upload a valid video file.");
+  }
+};
+
   // Calendar state
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
@@ -779,11 +798,32 @@ const startLiveVideo = useCallback(async () => {
                   </div>
                 ))}
 
-                <div className="bg-muted/50 rounded-lg p-3 text-center">
-                  <p className="text-xs text-muted-foreground">
-                    💡 After downloading, use the "Upload Video" tab to test
-                    detection
-                  </p>
+                <div className="bg-muted/50 rounded-lg py-3 text-center">
+                  
+                  {/* Suggest your own video card */}
+                  <div className="border rounded-lg overflow-hidden bg-muted/30 hover:bg-muted/40 transition">
+                    <div className="flex flex-col items-center justify-center p-4 text-center space-y-3">
+                      <Upload className="h-8 w-8 text-muted-foreground" />
+                      <p className="text-sm font-medium text-muted-foreground">
+                        Have a relevant video? Share it with us!
+                      </p>
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={handleSuggestedVideoUpload}
+                        className="hidden"
+                        ref={fileInputRef}
+                      />
+                      <Button size="sm" onClick={handleUploadClick}>
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload Your Video
+                      </Button>
+                      <p className="text-xs text-muted-foreground max-w-xs">
+                        Your video will be reviewed and may be featured in our
+                        examples section if approved.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>
