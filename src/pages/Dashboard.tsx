@@ -1070,6 +1070,63 @@ const startLiveVideo = useCallback(async () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Variables Card */}
+          <Card className="lg:col-span-1">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5 text-primary" />
+                Variables
+              </CardTitle>
+              <CardDescription>
+                Health badges and wrist watch metrics
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                {/* Health Badges Section */}
+                <div>
+                  <h4 className="font-semibold text-sm mb-2">Health Badges</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div className="bg-muted/50 rounded-lg p-4 text-center">
+                      <Heart className="h-6 w-6 text-primary mx-auto mb-2" />
+                      <p className="text-sm font-medium">Heart Rate</p>
+                      <p className="text-xs text-muted-foreground">72 bpm</p>
+                    </div>
+                    <div className="bg-muted/50 rounded-lg p-4 text-center">
+                      <Eye className="h-6 w-6 text-primary mx-auto mb-2" />
+                      <p className="text-sm font-medium">Vision Check</p>
+                      <p className="text-xs text-muted-foreground">Normal</p>
+                    </div>
+                    <div className="bg-muted/50 rounded-lg p-4 text-center">
+                      <Brain className="h-6 w-6 text-primary mx-auto mb-2" />
+                      <p className="text-sm font-medium">Cognitive</p>
+                      <p className="text-xs text-muted-foreground">Good</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Wrist Watches Section */}
+                <div>
+                  <h4 className="font-semibold text-sm mb-2">Wrist Watches</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="bg-muted/50 rounded-lg p-4 text-center">
+                      <Clock className="h-6 w-6 text-primary mx-auto mb-2" />
+                      <p className="text-sm font-medium">Steps Today</p>
+                      <p className="text-xs text-muted-foreground">
+                        4,236 steps
+                      </p>
+                    </div>
+                    <div className="bg-muted/50 rounded-lg p-4 text-center">
+                      <Dumbbell className="h-6 w-6 text-primary mx-auto mb-2" />
+                      <p className="text-sm font-medium">Calories Burned</p>
+                      <p className="text-xs text-muted-foreground">215 kcal</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
