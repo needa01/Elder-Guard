@@ -168,50 +168,37 @@ const Dashboard = () => {
 
 const startLiveVideo = useCallback(async () => {
   try {
+    // Stop existing stream if any
     if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+      stream.getTracks().forEach((t) => t.stop());
+      setStream(null);
     }
 
     const constraints = {
-      video: {
-        facingMode,
-        width: { min: 640, ideal: 1280, max: 1920 },
-        height: { min: 480, ideal: 720, max: 1080 },
-      },
+      video: { facingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
       audio: false,
     };
-
     const newStream = await navigator.mediaDevices.getUserMedia(constraints);
     setStream(newStream);
     setIsLiveMode(true);
     setUploadedVideo(null);
-
-    // Cleanup previous videoUrl
     if (videoUrl) {
       URL.revokeObjectURL(videoUrl);
       setVideoUrl(null);
     }
-
-    // Attach stream to video and wait for metadata
     if (videoRef.current) {
       videoRef.current.srcObject = newStream;
-
       videoRef.current.onloadedmetadata = async () => {
         try {
-          await videoRef.current?.play();
-        } catch (playError) {
-          console.warn(
-            "Autoplay failed, will require user interaction",
-            playError
-          );
+          await videoRef.current.play();
+        } catch (err) {
+          console.warn("Play failed after metadata:", err);
         }
       };
     }
   } catch (error) {
-    console.error("Error accessing camera:", error);
-    alert(
-      "Unable to access camera. Please ensure you have granted camera permissions and your device has a camera."
-    );
+    console.error("startLiveVideo error:", error);
+    alert("Unable to access camera—check permissions and device.");
   }
 }, [facingMode, stream, videoUrl]);
 
