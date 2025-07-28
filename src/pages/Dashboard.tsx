@@ -168,12 +168,13 @@ const Dashboard = () => {
 
 const startLiveVideo = useCallback(async () => {
   try {
-    // Stop existing stream if any
+    // Stop any existing stream
     if (stream) {
-      stream.getTracks().forEach((t) => t.stop());
+      stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
 
+    // Request new camera stream
     const constraints = {
       video: { facingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
       audio: false,
@@ -186,21 +187,27 @@ const startLiveVideo = useCallback(async () => {
       URL.revokeObjectURL(videoUrl);
       setVideoUrl(null);
     }
-    if (videoRef.current) {
-      videoRef.current.srcObject = newStream;
-      videoRef.current.onloadedmetadata = async () => {
-        try {
-          await videoRef.current.play();
-        } catch (err) {
-          console.warn("Play failed after metadata:", err);
-        }
-      };
-    }
+
+    // Wait for videoRef to mount
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.srcObject = newStream;
+        videoRef.current.onloadedmetadata = async () => {
+          try {
+            await videoRef.current?.play();
+            console.log("✅ Camera playback started");
+          } catch (err) {
+            console.warn("play() failed", err);
+          }
+        };
+      }
+    }, 200); // wait 200ms for React to finish rendering DOM
   } catch (error) {
-    console.error("startLiveVideo error:", error);
-    alert("Unable to access camera—check permissions and device.");
+    console.error("Camera init error:", error);
+    alert("Unable to access camera. Check permissions.");
   }
 }, [facingMode, stream, videoUrl]);
+
 
 
   const stopLiveVideo = useCallback(() => {
