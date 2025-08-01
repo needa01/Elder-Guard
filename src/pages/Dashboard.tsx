@@ -559,9 +559,9 @@ const startLiveVideo = useCallback(async () => {
                     </h3>
 
                     {!isLiveMode ? (
-                      <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                        <Camera className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                        <p className="text-muted-foreground mb-4">
+                      <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 flex flex-col items-center justify-center text-center space-y-4">
+                        <Camera className="h-12 w-12 text-muted-foreground" />
+                        <p className="text-muted-foreground">
                           Start live camera feed for real-time detection
                         </p>
                         <Button
@@ -799,7 +799,6 @@ const startLiveVideo = useCallback(async () => {
                 ))}
 
                 <div className="bg-muted/50 rounded-lg py-3 text-center">
-                  
                   {/* Suggest your own video card */}
                   <div className="border rounded-lg overflow-hidden bg-muted/30 hover:bg-muted/40 transition">
                     <div className="flex flex-col items-center justify-center p-4 text-center space-y-3">
